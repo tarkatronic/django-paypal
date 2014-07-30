@@ -93,18 +93,16 @@ class PayPalPro(object):
     def __call__(self, request):
         """Return the appropriate response for the state of the transaction."""
         self.request = request
-        if request.method == "GET":
-            if self.should_redirect_to_express():
-                return self.redirect_to_express()
-            elif self.should_render_confirm_form():
-                return self.render_confirm_form()
-            elif self.should_render_payment_form():
-                return self.render_payment_form()
-        else:
-            if self.should_validate_confirm_form():
-                return self.validate_confirm_form()
-            elif self.should_validate_payment_form():
-                return self.validate_payment_form()
+        if self.should_redirect_to_express():
+            return self.redirect_to_express()
+        elif self.should_render_confirm_form():
+            return self.render_confirm_form()
+        elif self.should_render_payment_form():
+            return self.render_payment_form()
+        if self.should_validate_confirm_form():
+            return self.validate_confirm_form()
+        elif self.should_validate_payment_form():
+            return self.validate_payment_form()
 
         # Default to the rendering the payment form.
         return self.render_payment_form()
